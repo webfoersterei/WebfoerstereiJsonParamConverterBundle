@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         bootstrap="Tests/bootstrap.php">
+
+    <testsuites>
+        <testsuite name="WebfoerstereiJsonParamConverterBundle Test Suite">
+            <directory>./Tests/</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory>./</directory>
+            <exclude>
+                <directory>./Resources</directory>
+                <directory>./Tests</directory>
+                <directory>./vendor</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+
+    <groups>
+        <include>
+            <group>util</group>
+            <group>orm</group>
+            <group>odm</group>
+            <group>propel</group>
+            <group>exporter</group>
+            <group>loader</group>
+            <group>importer</group>
+            <group>translator</group>
+            <group>command</group>
+        </include>
+    </groups>
+</phpunit>

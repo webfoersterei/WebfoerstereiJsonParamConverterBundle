@@ -1,5 +1,6 @@
 {
     "name": "webfoersterei/json-param-converter-bundle",
+    "description": "ParamConverter for symfony to convert JSON-requests and validate them",
     "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
