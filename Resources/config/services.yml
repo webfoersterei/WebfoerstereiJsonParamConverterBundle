@@ -1,0 +1,7 @@
+services:
+  webfoersterei_jsonparamconverter.param_converter:
+    class: Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\JsonParamConverter
+    tags: [{ name: request.param_converter, converter: webfoersterei_jsonparamconverter }]
+    arguments:
+      - '@serializer'
+      - '@validator'
