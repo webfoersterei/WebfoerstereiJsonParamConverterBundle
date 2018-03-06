@@ -14,5 +14,8 @@
     },
     "autoload": {
         "psr-4": { "Webfoersterei\\Bundle\\JsonParamConverterBundle\\": "" }
+    },
+    "require-dev": {
+        "symfony/phpunit-bridge": "^4.0"
     }
 }
