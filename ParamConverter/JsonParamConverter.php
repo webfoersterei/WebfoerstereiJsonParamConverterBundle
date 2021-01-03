@@ -6,7 +6,6 @@
 
 namespace Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter;
 
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,12 +16,10 @@ use Webfoersterei\Bundle\JsonParamConverterBundle\Exception\BadRequestException;
 class JsonParamConverter implements ParamConverterInterface
 {
     public const VALIDATION_ERRORS_ARGUMENT = 'validationErrorList';
-
     /**
      * @var SerializerInterface
      */
     private $serializer;
-
     /**
      * @var ValidatorInterface
      */
@@ -39,12 +36,14 @@ class JsonParamConverter implements ParamConverterInterface
     /**
      * @param Request $request
      * @param ParamConverter $configuration
+     *
      * @throws \Webfoersterei\Bundle\JsonParamConverterBundle\Exception\BadRequestException
      * @throws BadRequestException
      */
-    public function apply(Request $request, ParamConverter $configuration) {
-        if (\strlen($request->getContent()) > 0) {
-            if ($request->getContentType() === 'json') {
+    public function apply(Request $request, ParamConverter $configuration): bool
+    {
+        if ($request->getContent()) {
+            if ('json' === $request->getContentType()) {
                 try {
                     $className = $configuration->getClass();
                     $object = $this->serializer->deserialize($request->getContent(), $className, 'json');
@@ -59,17 +58,26 @@ class JsonParamConverter implements ParamConverterInterface
                     throw new BadRequestException($ex->getMessage(), null, $ex);
                 }
             } else {
-                throw new BadRequestException();
+                return false;
             }
         }
+
+        return true;
     }
 
     /**
      * @param ParamConverter $configuration
+     *
      * @return bool
      */
-    public function supports(ParamConverter $configuration) {
+    public function supports(ParamConverter $configuration)
+    {
         if (!$configuration->getClass()) {
+            return false;
+        }
+
+        $reflection = new \ReflectionClass($configuration->getClass());
+        if (!$reflection->getAttributes(JsonDto::class)) {
             return false;
         }
 

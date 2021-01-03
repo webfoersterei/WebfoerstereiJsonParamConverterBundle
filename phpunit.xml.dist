@@ -1,39 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<phpunit colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         bootstrap="Tests/bootstrap.php">
-
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" colors="true" convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true" convertWarningsToExceptions="true" bootstrap="Tests/bootstrap.php"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+    <coverage>
+        <include>
+            <directory>./</directory>
+        </include>
+        <exclude>
+            <directory>./Resources</directory>
+            <directory>./Tests</directory>
+            <directory>./vendor</directory>
+        </exclude>
+    </coverage>
     <testsuites>
         <testsuite name="WebfoerstereiJsonParamConverterBundle Test Suite">
-            <directory>./Tests/</directory>
+            <directory>./Tests</directory>
         </testsuite>
     </testsuites>
-
-    <filter>
-        <whitelist>
-            <directory>./</directory>
-            <exclude>
-                <directory>./Resources</directory>
-                <directory>./Tests</directory>
-                <directory>./vendor</directory>
-            </exclude>
-        </whitelist>
-    </filter>
-
-    <groups>
-        <include>
-            <group>util</group>
-            <group>orm</group>
-            <group>odm</group>
-            <group>propel</group>
-            <group>exporter</group>
-            <group>loader</group>
-            <group>importer</group>
-            <group>translator</group>
-            <group>command</group>
-        </include>
-    </groups>
 </phpunit>
