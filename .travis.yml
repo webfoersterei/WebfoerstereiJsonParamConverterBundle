@@ -24,7 +24,7 @@ matrix:
           # Test LTS versions. This makes sure we do not use Symfony packages with version greater
           # than 3 respectively. Read more at https://github.com/symfony/lts
         - php: 8.0
-          env: DEPENDENCIES="symfony/flex:^5.0" SYMFONY_VERSION="^5.0"
+          env: DEPENDENCIES="symfony/flex:^1.0" SYMFONY_VERSION="^5.0"
 
           # Latest commit to master
         - php: 8.0
