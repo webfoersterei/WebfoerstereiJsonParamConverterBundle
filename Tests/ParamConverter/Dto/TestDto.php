@@ -9,9 +9,9 @@ declare(strict_types=1);
 
 namespace Webfoersterei\Bundle\JsonParamConverterBundle\Tests\ParamConverter\Dto;
 
-use Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\JsonDto;
+use Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\JsonInputDto;
 
-#[JsonDto]
+#[JsonInputDto]
 class TestDto
 {
     public string $testProperty;

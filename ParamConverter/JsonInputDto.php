@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter;
 
-#[\Attribute]
-class JsonDto
+#[\Attribute(\Attribute::TARGET_CLASS)]
+class JsonInputDto
 {
     public function __construct()
     {
