@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * @author Timo Förster <tfoerster@webfoersterei.de>
  * @date 06.03.18
@@ -11,7 +14,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInte
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Webfoersterei\Bundle\JsonParamConverterBundle\Exception\BadRequestException;
 
 class JsonParamConverter implements ParamConverterInterface
 {
@@ -19,11 +21,11 @@ class JsonParamConverter implements ParamConverterInterface
     /**
      * @var SerializerInterface
      */
-    private $serializer;
+    private SerializerInterface $serializer;
     /**
      * @var ValidatorInterface
      */
-    private $validator;
+    private ValidatorInterface $validator;
 
     public function __construct(
         SerializerInterface $serializer,
@@ -37,38 +39,29 @@ class JsonParamConverter implements ParamConverterInterface
      * @param Request $request
      * @param ParamConverter $configuration
      *
-     * @throws \Webfoersterei\Bundle\JsonParamConverterBundle\Exception\BadRequestException
-     * @throws BadRequestException
      */
     public function apply(Request $request, ParamConverter $configuration): bool
     {
-        if ($request->getContent()) {
-            if ('json' === $request->getContentType()) {
-                try {
-                    $className = $configuration->getClass();
-                    $object = $this->serializer->deserialize($request->getContent(), $className, 'json');
+        if ($request->getContent() && 'json' === $request->getContentType()) {
+            $className = $configuration->getClass();
+            $object = $this->serializer->deserialize($request->getContent(), $className, 'json');
 
-                    if ($this->validator) {
-                        $errors = $this->validator->validate($object);
-                        $request->attributes->set(self::VALIDATION_ERRORS_ARGUMENT, $errors);
-                    }
+            $errors = $this->validator->validate($object);
+            $request->attributes->set(self::VALIDATION_ERRORS_ARGUMENT, $errors);
 
-                    $request->attributes->set($configuration->getName(), $object);
-                } catch (\Exception $ex) {
-                    throw new BadRequestException($ex->getMessage(), null, $ex);
-                }
-            } else {
-                return false;
-            }
+            $request->attributes->set($configuration->getName(), $object);
+
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     /**
      * @param ParamConverter $configuration
      *
      * @return bool
+     * @throws \ReflectionException
      */
     public function supports(ParamConverter $configuration)
     {
@@ -77,7 +70,7 @@ class JsonParamConverter implements ParamConverterInterface
         }
 
         $reflection = new \ReflectionClass($configuration->getClass());
-        if (!$reflection->getAttributes(JsonDto::class)) {
+        if (!$reflection->getAttributes(JsonInputDto::class)) {
             return false;
         }
 
