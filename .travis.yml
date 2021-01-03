@@ -24,7 +24,7 @@ matrix:
           # Test LTS versions. This makes sure we do not use Symfony packages with version greater
           # than 3 respectively. Read more at https://github.com/symfony/lts
         - php: 8.0
-          env: DEPENDENCIES="symfony/lts:^5"
+          env: DEPENDENCIES="symfony/flex:^5.0" SYMFONY_VERSION="^5.0"
 
           # Latest commit to master
         - php: 8.0
@@ -37,6 +37,7 @@ matrix:
 before_install:
     - if [[ $COVERAGE != true ]]; then phpenv config-rm xdebug.ini || true; fi
     - if ! [ -z "$STABILITY" ]; then composer config minimum-stability ${STABILITY}; fi;
+    - if ! [ -z "$SYMFONY_VERSION" ]; then composer config extra.symfony.require ${SYMFONY_VERSION}; fi;
     - if ! [ -v "$DEPENDENCIES" ]; then composer require --no-update ${DEPENDENCIES}; fi;
 
 install:
