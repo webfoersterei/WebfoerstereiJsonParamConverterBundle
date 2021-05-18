@@ -27,7 +27,7 @@ class JsonInputDtoParamConverter implements ParamConverterInterface
      * @var ValidatorInterface
      */
     private ValidatorInterface $validator;
-    private ?bool $handleViolations;
+    private ?bool $throwExceptions;
 
     public function __construct(
         SerializerInterface $serializer,
@@ -36,7 +36,7 @@ class JsonInputDtoParamConverter implements ParamConverterInterface
     ) {
         $this->serializer = $serializer;
         $this->validator = $validator;
-        $this->handleViolations = $handleViolations;
+        $this->throwExceptions = $handleViolations;
     }
 
     public static function wasExecuted(): bool
@@ -58,7 +58,7 @@ class JsonInputDtoParamConverter implements ParamConverterInterface
 
             $errors = $this->validator->validate($object);
 
-            if ($this->handleViolations) {
+            if ($this->throwExceptions && $errors->count() >= 1) {
                 throw new JsonInputDtoValidationException($errors);
             }
 
