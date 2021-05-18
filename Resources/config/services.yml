@@ -14,3 +14,6 @@ services:
   webfoersterei_jsonparamconverter.errorlist_handler:
     class: Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\EventListener\JsonInputDtoValidationExceptionListener
     tags: [ { name: kernel.event_listener, event: kernel.exception } ]
+    arguments:
+      - null
+
