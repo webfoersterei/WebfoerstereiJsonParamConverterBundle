@@ -46,7 +46,7 @@ class JsonInputDtoValidationException extends NotFoundHttpException
 
         $result = [];
         foreach ($errors as $property => $details) {
-            $result[] = ['property' => $property, ...$details];
+            $result[] = array_merge(['property' => $property], $details);
         }
 
         return $result;
