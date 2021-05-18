@@ -23,7 +23,7 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\ConstraintErrorListParamConverter;
+use Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\ConstraintViolationListParamConverter;
 use Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\JsonInputDtoParamConverter;
 use PHPUnit\Framework\TestCase;
 use Webfoersterei\Bundle\JsonParamConverterBundle\Tests\ParamConverter\Dto\NoDto;
@@ -105,7 +105,7 @@ class JsonInputDtoParamConverterTest extends TestCase
         self::assertInstanceOf(TestDto::class, $arg);
         self::assertEquals('wrongValue', $arg->testProperty);
         /** @var ConstraintViolationListInterface $constraintViolations */
-        $constraintViolations = $request->attributes->get(ConstraintErrorListParamConverter::VALIDATION_ERRORS_ARGUMENT);
+        $constraintViolations = $request->attributes->get(ConstraintViolationListParamConverter::VALIDATION_ERRORS_ARGUMENT);
         self::assertInstanceOf(ConstraintViolationListInterface::class, $constraintViolations);
         self::assertEquals($expectedConstraintViolations, $constraintViolations);
     }

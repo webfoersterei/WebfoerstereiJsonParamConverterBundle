@@ -14,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInte
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-class ConstraintErrorListParamConverter implements ParamConverterInterface
+class ConstraintViolationListParamConverter implements ParamConverterInterface
 {
     public const VALIDATION_ERRORS_ARGUMENT = 'validationErrorList';
 

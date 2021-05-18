@@ -9,3 +9,7 @@ services:
   webfoersterei_jsonparamconverter.errorlist_param_converter:
     class: Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\ConstraintErrorListParamConverter
     tags: [ { name: request.param_converter, converter: webfoersterei_paramconverter_constrainterrorlist } ]
+
+  webfoersterei_jsonparamconverter.errorlist_handler:
+    class: Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\EventListener\JsonInputDtoValidationExceptionListener
+    tags: [ { name: kernel.event_listener, event: kernel.exception } ]

@@ -14,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInte
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webfoersterei\Bundle\JsonParamConverterBundle\Exception\JsonInputDtoValidationException;
 
 class JsonInputDtoParamConverter implements ParamConverterInterface
 {
@@ -26,13 +27,16 @@ class JsonInputDtoParamConverter implements ParamConverterInterface
      * @var ValidatorInterface
      */
     private ValidatorInterface $validator;
+    private ?bool $handleViolations;
 
     public function __construct(
         SerializerInterface $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        ?bool $handleViolations = false
     ) {
         $this->serializer = $serializer;
         $this->validator = $validator;
+        $this->handleViolations = $handleViolations;
     }
 
     public static function wasExecuted(): bool
@@ -53,8 +57,12 @@ class JsonInputDtoParamConverter implements ParamConverterInterface
             $object = $this->serializer->deserialize($request->getContent(), $className, 'json');
 
             $errors = $this->validator->validate($object);
-            $request->attributes->set(ConstraintErrorListParamConverter::VALIDATION_ERRORS_ARGUMENT, $errors);
 
+            if ($this->handleViolations) {
+                throw new JsonInputDtoValidationException($errors);
+            }
+
+            $request->attributes->set(ConstraintViolationListParamConverter::VALIDATION_ERRORS_ARGUMENT, $errors);
             $request->attributes->set($configuration->getName(), $object);
 
             self::$wasExecuted = true;
