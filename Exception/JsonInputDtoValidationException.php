@@ -32,15 +32,21 @@ class JsonInputDtoValidationException extends NotFoundHttpException
         $errors = [];
         /** @var ConstraintViolationInterface $constraintViolation */
         foreach ($this->constraintViolationList as $constraintViolation) {
-            $errors[$constraintViolation->getPropertyPath()][] = [
-                'msg'   => $constraintViolation->getMessage(),
-                'value' => $constraintViolation->getInvalidValue(),
+            if (!$errors[$constraintViolation->getPropertyPath()]) {
+                $errors[$constraintViolation->getPropertyPath()] = [
+                    'value'  => $constraintViolation->getInvalidValue(),
+                    'errors' => [],
+                ];
+            }
+            $errors[$constraintViolation->getPropertyPath()]['errors'][] = [
+                'code' => $constraintViolation->getCode(),
+                'msg'  => $constraintViolation->getMessage(),
             ];
         }
 
         $result = [];
-        foreach ($errors as $property => $errorList) {
-            $result[] = ['property' => $property, 'errors' => $errorList];
+        foreach ($errors as $property => $details) {
+            $result[] = ['property' => $property, ...$details];
         }
 
         return $result;
