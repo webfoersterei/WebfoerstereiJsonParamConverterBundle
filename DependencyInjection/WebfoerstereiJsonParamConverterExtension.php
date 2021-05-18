@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class WebfoerstereiJsonParamConverterExtension extends Extension
 {
-    public const EXTENSION_ALIAS = 'wf_jsoninputdto';
+    public const EXTENSION_ALIAS = 'webfoersterei_json_param_converter';
 
     /**
      * @inheritDoc
