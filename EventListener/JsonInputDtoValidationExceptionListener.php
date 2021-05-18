@@ -41,7 +41,7 @@ class JsonInputDtoValidationExceptionListener
         if ($exception instanceof JsonInputDtoValidationException) {
             $event->setResponse(
                 new JsonResponse(
-                    $exception->generateConstraintViolationDescription(),
+                    ['errors' => $exception->generateConstraintViolationDescription()],
                     Response::HTTP_BAD_REQUEST
                 )
             );

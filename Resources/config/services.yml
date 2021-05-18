@@ -8,12 +8,11 @@ services:
       - false
 
   webfoersterei_jsonparamconverter.errorlist_param_converter:
-    class: Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\ConstraintErrorListParamConverter
+    class: Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\ConstraintViolationListParamConverter
     tags: [ { name: request.param_converter, converter: webfoersterei_paramconverter_constrainterrorlist } ]
 
   webfoersterei_jsonparamconverter.errorlist_handler:
-    class: Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\EventListener\JsonInputDtoValidationExceptionListener
+    class: Webfoersterei\Bundle\JsonParamConverterBundle\EventListener\JsonInputDtoValidationExceptionListener
     tags: [ { name: kernel.event_listener, event: kernel.exception } ]
     arguments:
       - null
-
