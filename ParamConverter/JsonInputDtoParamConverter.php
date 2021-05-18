@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class JsonInputDtoParamConverter implements ParamConverterInterface
 {
-    public const VALIDATION_ERRORS_ARGUMENT = 'validationErrorList';
+    private static bool $wasExecuted = false;
     /**
      * @var SerializerInterface
      */
@@ -35,10 +35,16 @@ class JsonInputDtoParamConverter implements ParamConverterInterface
         $this->validator = $validator;
     }
 
+    public static function wasExecuted(): bool
+    {
+        return self::$wasExecuted;
+    }
+
     /**
      * @param Request $request
      * @param ParamConverter $configuration
      *
+     * @return bool
      */
     public function apply(Request $request, ParamConverter $configuration): bool
     {
@@ -47,9 +53,11 @@ class JsonInputDtoParamConverter implements ParamConverterInterface
             $object = $this->serializer->deserialize($request->getContent(), $className, 'json');
 
             $errors = $this->validator->validate($object);
-            $request->attributes->set(self::VALIDATION_ERRORS_ARGUMENT, $errors);
+            $request->attributes->set(ConstraintErrorListParamConverter::VALIDATION_ERRORS_ARGUMENT, $errors);
 
             $request->attributes->set($configuration->getName(), $object);
+
+            self::$wasExecuted = true;
 
             return true;
         }

@@ -1,7 +1,11 @@
 services:
   webfoersterei_jsonparamconverter.dto_param_converter:
     class: Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\JsonInputDtoParamConverter
-    tags: [{ name: request.param_converter, converter: webfoersterei_jsonparamconverter }]
+    tags: [ { name: request.param_converter, converter: webfoersterei_paramconverter_jsoninputdto } ]
     arguments:
       - '@serializer'
       - '@validator'
+
+  webfoersterei_jsonparamconverter.errorlist_param_converter:
+    class: Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\ConstraintErrorListParamConverter
+    tags: [ { name: request.param_converter, converter: webfoersterei_paramconverter_constrainterrorlist } ]
