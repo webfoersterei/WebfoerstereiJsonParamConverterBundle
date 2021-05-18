@@ -32,7 +32,7 @@ class JsonInputDtoParamConverter implements ParamConverterInterface
     public function __construct(
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        ?bool $handleViolations = false
+        bool $handleViolations = false
     ) {
         $this->serializer = $serializer;
         $this->validator = $validator;

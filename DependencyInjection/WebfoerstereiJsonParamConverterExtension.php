@@ -30,7 +30,7 @@ class WebfoerstereiJsonParamConverterExtension extends Extension
 
         $config = $this->processConfiguration($configuration, $configs);
 
-        $definition = $container->getDefinition('webfoersterei_jsonparamconverter.errorlist_param_converter');
+        $definition = $container->getDefinition('webfoersterei_jsonparamconverter.dto_param_converter');
         $definition->replaceArgument(2, (bool)$config[Configuration::CONFIG_THROW_EXCEPTION]);
 
         $definition = $container->getDefinition('webfoersterei_jsonparamconverter.errorlist_handler');

@@ -26,7 +26,7 @@ class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
                     ->children()
-                        ->booleanNode(self::CONFIG_THROW_EXCEPTION)->end()
+                        ->booleanNode(self::CONFIG_THROW_EXCEPTION)->defaultFalse()->end()
                         ->scalarNode(self::CONFIG_CONVERT_EXCEPTION_HTTP_CODE)->end()
                     ->end()
                     ->end();
