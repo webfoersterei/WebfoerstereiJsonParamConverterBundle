@@ -5,6 +5,7 @@ services:
     arguments:
       - '@serializer'
       - '@validator'
+      - false
 
   webfoersterei_jsonparamconverter.errorlist_param_converter:
     class: Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\ConstraintErrorListParamConverter
