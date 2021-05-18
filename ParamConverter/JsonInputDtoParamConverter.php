@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class JsonParamConverter implements ParamConverterInterface
+class JsonInputDtoParamConverter implements ParamConverterInterface
 {
     public const VALIDATION_ERRORS_ARGUMENT = 'validationErrorList';
     /**
