@@ -23,14 +23,15 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\JsonParamConverter;
+use Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\ConstraintViolationListParamConverter;
+use Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\JsonInputDtoParamConverter;
 use PHPUnit\Framework\TestCase;
 use Webfoersterei\Bundle\JsonParamConverterBundle\Tests\ParamConverter\Dto\NoDto;
 use Webfoersterei\Bundle\JsonParamConverterBundle\Tests\ParamConverter\Dto\TestDto;
 
-class JsonParamConverterTest extends TestCase
+class JsonInputDtoParamConverterTest extends TestCase
 {
-    private JsonParamConverter $converter;
+    private JsonInputDtoParamConverter $converter;
 
     public function testApply(): void
     {
@@ -92,7 +93,7 @@ class JsonParamConverterTest extends TestCase
         $expectedConstraintViolations->add(
             new ConstraintViolation('Test Violation', null, [], null, 'testProperty', 'wrongValue')
         );
-        $this->converter = new JsonParamConverter(
+        $this->converter = new JsonInputDtoParamConverter(
             $this->getSerializer(),
             $this->getValidator($expectedConstraintViolations)
         );
@@ -104,7 +105,7 @@ class JsonParamConverterTest extends TestCase
         self::assertInstanceOf(TestDto::class, $arg);
         self::assertEquals('wrongValue', $arg->testProperty);
         /** @var ConstraintViolationListInterface $constraintViolations */
-        $constraintViolations = $request->attributes->get(JsonParamConverter::VALIDATION_ERRORS_ARGUMENT);
+        $constraintViolations = $request->attributes->get(ConstraintViolationListParamConverter::VALIDATION_ERRORS_ARGUMENT);
         self::assertInstanceOf(ConstraintViolationListInterface::class, $constraintViolations);
         self::assertEquals($expectedConstraintViolations, $constraintViolations);
     }
@@ -153,6 +154,6 @@ class JsonParamConverterTest extends TestCase
         $serializer = $this->getSerializer();
         /** @var ValidatorInterface $validator */
         $validator = $this->getValidator();
-        $this->converter = new JsonParamConverter($serializer, $validator);
+        $this->converter = new JsonInputDtoParamConverter($serializer, $validator);
     }
 }

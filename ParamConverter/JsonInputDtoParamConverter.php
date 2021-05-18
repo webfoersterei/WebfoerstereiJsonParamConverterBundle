@@ -14,10 +14,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInte
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webfoersterei\Bundle\JsonParamConverterBundle\Exception\JsonInputDtoValidationException;
 
-class JsonParamConverter implements ParamConverterInterface
+class JsonInputDtoParamConverter implements ParamConverterInterface
 {
-    public const VALIDATION_ERRORS_ARGUMENT = 'validationErrorList';
+    private static bool $wasExecuted = false;
     /**
      * @var SerializerInterface
      */
@@ -26,19 +27,28 @@ class JsonParamConverter implements ParamConverterInterface
      * @var ValidatorInterface
      */
     private ValidatorInterface $validator;
+    private ?bool $throwExceptions;
 
     public function __construct(
         SerializerInterface $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        bool $handleViolations = false
     ) {
         $this->serializer = $serializer;
         $this->validator = $validator;
+        $this->throwExceptions = $handleViolations;
+    }
+
+    public static function wasExecuted(): bool
+    {
+        return self::$wasExecuted;
     }
 
     /**
      * @param Request $request
      * @param ParamConverter $configuration
      *
+     * @return bool
      */
     public function apply(Request $request, ParamConverter $configuration): bool
     {
@@ -47,9 +57,15 @@ class JsonParamConverter implements ParamConverterInterface
             $object = $this->serializer->deserialize($request->getContent(), $className, 'json');
 
             $errors = $this->validator->validate($object);
-            $request->attributes->set(self::VALIDATION_ERRORS_ARGUMENT, $errors);
 
+            if ($this->throwExceptions && $errors->count() >= 1) {
+                throw new JsonInputDtoValidationException($errors);
+            }
+
+            $request->attributes->set(ConstraintViolationListParamConverter::VALIDATION_ERRORS_ARGUMENT, $errors);
             $request->attributes->set($configuration->getName(), $object);
+
+            self::$wasExecuted = true;
 
             return true;
         }

@@ -1,7 +1,18 @@
 services:
-  webfoersterei_jsonparamconverter.param_converter:
-    class: Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\JsonParamConverter
-    tags: [{ name: request.param_converter, converter: webfoersterei_jsonparamconverter }]
+  webfoersterei_jsonparamconverter.dto_param_converter:
+    class: Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\JsonInputDtoParamConverter
+    tags: [ { name: request.param_converter, converter: webfoersterei_paramconverter_jsoninputdto } ]
     arguments:
       - '@serializer'
       - '@validator'
+      - false
+
+  webfoersterei_jsonparamconverter.errorlist_param_converter:
+    class: Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\ConstraintViolationListParamConverter
+    tags: [ { name: request.param_converter, converter: webfoersterei_paramconverter_constrainterrorlist } ]
+
+  webfoersterei_jsonparamconverter.errorlist_handler:
+    class: Webfoersterei\Bundle\JsonParamConverterBundle\EventListener\JsonInputDtoValidationExceptionListener
+    tags: [ { name: kernel.event_listener, event: kernel.exception } ]
+    arguments:
+      - null
