@@ -16,15 +16,18 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 class JsonInputDtoValidationException extends NotFoundHttpException
 {
     private ConstraintViolationListInterface $constraintViolationList;
+    private ?object $validatedObject;
 
     public function __construct(
         ConstraintViolationListInterface $constraintViolationList,
+        ?object $validatedObject = null,
         \Throwable $previous = null,
         int $code = 0,
         array $headers = []
     ) {
         parent::__construct('There were validation errors', $previous, $code, $headers);
         $this->constraintViolationList = $constraintViolationList;
+        $this->validatedObject = $validatedObject;
     }
 
     public function generateConstraintViolationDescription(): array
@@ -35,8 +38,8 @@ class JsonInputDtoValidationException extends NotFoundHttpException
             if (!isset($errors[$constraintViolation->getPropertyPath()])) {
                 $errors[$constraintViolation->getPropertyPath()] = [
                     'property' => $constraintViolation->getPropertyPath(),
-                    'value'  => $constraintViolation->getInvalidValue(),
-                    'errors' => [],
+                    'value'    => $constraintViolation->getInvalidValue(),
+                    'errors'   => [],
                 ];
             }
             $errors[$constraintViolation->getPropertyPath()]['errors'][] = [
@@ -46,5 +49,21 @@ class JsonInputDtoValidationException extends NotFoundHttpException
         }
 
         return array_values($errors);
+    }
+
+    /**
+     * @return ConstraintViolationListInterface
+     */
+    public function getConstraintViolationList(): ConstraintViolationListInterface
+    {
+        return $this->constraintViolationList;
+    }
+
+    /**
+     * @return object|null
+     */
+    public function getValidatedObject(): ?object
+    {
+        return $this->validatedObject;
     }
 }

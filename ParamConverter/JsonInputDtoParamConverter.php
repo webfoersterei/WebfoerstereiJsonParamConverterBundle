@@ -59,7 +59,7 @@ class JsonInputDtoParamConverter implements ParamConverterInterface
             $errors = $this->validator->validate($object);
 
             if ($this->throwExceptions && $errors->count() >= 1) {
-                throw new JsonInputDtoValidationException($errors);
+                throw new JsonInputDtoValidationException($errors, $object);
             }
 
             $request->attributes->set(ConstraintViolationListParamConverter::VALIDATION_ERRORS_ARGUMENT, $errors);
