@@ -37,7 +37,7 @@ class WebfoerstereiJsonParamConverterExtension extends Extension
         $definition->replaceArgument(0, (int)$config[Configuration::CONFIG_CONVERT_EXCEPTION_HTTP_CODE]);
     }
 
-    public function getAlias()
+    public function getAlias(): string
     {
         return self::EXTENSION_ALIAS;
     }
