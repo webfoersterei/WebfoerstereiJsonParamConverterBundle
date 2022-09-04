@@ -15,7 +15,9 @@ matrix:
     include:
           # Minimum supported dependencies with the latest and oldest PHP version
         - php: 8.0
-          env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest" SYMFONY_DEPRECATIONS_HELPER="weak_vendors"
+          env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest" SYMFONY_DEPRECATIONS_HELPER="max[self]=0"
+        - php: 8.1
+          env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest" SYMFONY_DEPRECATIONS_HELPER="max[self]=0"
 
           # Test the latest stable release
         - php: 8.0
@@ -24,10 +26,14 @@ matrix:
           # Test LTS versions. This makes sure we do not use Symfony packages with version greater
           # than 3 respectively. Read more at https://github.com/symfony/lts
         - php: 8.0
-          env: DEPENDENCIES="symfony/flex:^1.0" SYMFONY_VERSION="^5.0"
+          env: DEPENDENCIES="symfony/flex:^1.0" SYMFONY_VERSION="^6.0"
 
           # Latest commit to master
         - php: 8.0
+          env: STABILITY="dev"
+
+          # Latest commit to master
+        - php: 8.1
           env: STABILITY="dev"
 
     allow_failures:
