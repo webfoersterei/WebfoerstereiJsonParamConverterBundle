@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Webfoersterei\Bundle\JsonParamConverterBundle\Tests\ParamConverter;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -23,9 +24,8 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\ConstraintViolationListParamConverter;
-use Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\JsonInputDtoParamConverter;
-use PHPUnit\Framework\TestCase;
+use Webfoersterei\Bundle\JsonParamConverterBundle\src\ParamConverter\ConstraintViolationListParamConverter;
+use Webfoersterei\Bundle\JsonParamConverterBundle\src\ParamConverter\JsonInputDtoParamConverter;
 use Webfoersterei\Bundle\JsonParamConverterBundle\Tests\ParamConverter\Dto\NoDto;
 use Webfoersterei\Bundle\JsonParamConverterBundle\Tests\ParamConverter\Dto\TestDto;
 

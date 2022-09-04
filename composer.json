@@ -20,8 +20,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Webfoersterei\\Bundle\\JsonParamConverterBundle\\": "",
-            "Webfoersterei\\Bundle\\JsonParamConverterBundle\\Tests\\": "Tests/"
+            "Webfoersterei\\Bundle\\JsonParamConverterBundle\\": ""
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Webfoersterei\\Bundle\\JsonParamConverterBundle\\Tests\\": "tests/"
         }
     },
     "require-dev": {
