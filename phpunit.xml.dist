@@ -7,14 +7,13 @@
             <directory>./</directory>
         </include>
         <exclude>
-            <directory>./Resources</directory>
-            <directory>./Tests</directory>
+            <directory>./tests</directory>
             <directory>./vendor</directory>
         </exclude>
     </coverage>
     <testsuites>
         <testsuite name="WebfoerstereiJsonParamConverterBundle Test Suite">
-            <directory>./Tests</directory>
+            <directory>./tests</directory>
         </testsuite>
     </testsuites>
 </phpunit>

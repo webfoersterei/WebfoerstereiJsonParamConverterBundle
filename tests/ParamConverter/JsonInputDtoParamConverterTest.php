@@ -24,8 +24,8 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Webfoersterei\Bundle\JsonParamConverterBundle\src\ParamConverter\ConstraintViolationListParamConverter;
-use Webfoersterei\Bundle\JsonParamConverterBundle\src\ParamConverter\JsonInputDtoParamConverter;
+use Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\ConstraintViolationListParamConverter;
+use Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\JsonInputDtoParamConverter;
 use Webfoersterei\Bundle\JsonParamConverterBundle\Tests\ParamConverter\Dto\NoDto;
 use Webfoersterei\Bundle\JsonParamConverterBundle\Tests\ParamConverter\Dto\TestDto;
 
@@ -108,6 +108,51 @@ class JsonInputDtoParamConverterTest extends TestCase
         $constraintViolations = $request->attributes->get(ConstraintViolationListParamConverter::VALIDATION_ERRORS_ARGUMENT);
         self::assertInstanceOf(ConstraintViolationListInterface::class, $constraintViolations);
         self::assertEquals($expectedConstraintViolations, $constraintViolations);
+    }
+
+    public function testApplyInvalidJson(): void
+    {
+        $request = new Request(
+            server: ['CONTENT_TYPE' => 'application/json'],
+            content: 'nojson'
+        );
+        $config = $this->createConfiguration(TestDto::class);
+
+        $expectedConstraintViolations = new ConstraintViolationList();
+        $expectedConstraintViolations->add(
+            new ConstraintViolation('Could not deserialize JSON: Syntax error', null, [], null, '', null)
+        );
+        $this->converter = new JsonInputDtoParamConverter(
+            $this->getSerializer(),
+            $this->getValidator()
+        );
+
+        self::assertTrue($this->converter->apply($request, $config));
+        self::assertNull($request->attributes->get('arg'));
+
+        /** @var ConstraintViolationListInterface $constraintViolations */
+        $constraintViolations = $request->attributes->get(ConstraintViolationListParamConverter::VALIDATION_ERRORS_ARGUMENT);
+        self::assertInstanceOf(ConstraintViolationListInterface::class, $constraintViolations);
+        self::assertEquals($expectedConstraintViolations, $constraintViolations);
+    }
+
+    public function testDontApplyNoContent(): void
+    {
+        $request = new Request(
+            server: ['CONTENT_TYPE' => 'application/json'],
+            content: ''
+        );
+        $config = $this->createConfiguration(null);
+
+        $this->converter = new JsonInputDtoParamConverter(
+            $this->getSerializer(),
+            $this->getValidator()
+        );
+
+        self::assertFalse($this->converter->apply($request, $config));
+        /** @var TestDto $arg */
+        $arg = $request->attributes->get('arg');
+        self::assertNull($arg);
     }
 
     protected function getSerializer(): Serializer

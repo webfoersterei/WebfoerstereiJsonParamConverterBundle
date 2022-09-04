@@ -6,9 +6,8 @@
 
 namespace Webfoersterei\Bundle\JsonParamConverterBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
-class WebfoerstereiJsonParamConverterBundle extends Bundle
+class WebfoerstereiJsonParamConverterBundle extends AbstractBundle
 {
-
 }

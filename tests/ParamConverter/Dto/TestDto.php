@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Webfoersterei\Bundle\JsonParamConverterBundle\Tests\ParamConverter\Dto;
 
-use Webfoersterei\Bundle\JsonParamConverterBundle\src\ParamConverter\JsonInputDto;
+use Webfoersterei\Bundle\JsonParamConverterBundle\ParamConverter\JsonInputDto;
 
 #[JsonInputDto]
 class TestDto
